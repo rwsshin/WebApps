@@ -83,6 +83,11 @@
 
 		<?php
 		 	 if(isset($_GET['search_button']) && isset($_GET['search_term'])){
+$search_term = $_GET['search_term'];
+echo "<span class='label label-success'>Showing Search Results for: $search_term</span><br>";
+echo "<span class='label label-primary'>Searches are done on Best Buy, RadioShack, Target, Amazon, Macy's, and Nordstrom.</span><br>";
+echo "<span class='label label-danger'>Search terms may cause crashes. Infinite loops may occur when the search term is a name i.e. Britney Spears.</span><br><br>";
+
 		 	 	// Provides: <body text='black'>
 				$search_term = str_replace(" ", "+", $_GET['search_term']);
 

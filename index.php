@@ -691,6 +691,335 @@
                 echo "</table></div>";
                 //TARGET PRODUCT LISTINGS
 
+
+
+                //AMAZON PRODUCT LISTINGS
+                $amazon_url = 'http://www.amazon.com/s/ref=sr_ex_n_0?fst=as%3Aoff&rh=i%3Aaps%2Ck%3Ashoes&keywords=' . $_GET['best_buy_search_term'];
+                $amazon_html = fread_url($amazon_url);
+                $item_listing_begin_tag   = '<li id="result_';
+                $pos = 0;
+
+
+                echo "<div><table border='1'>";
+                echo "<caption>From Amazon</caption>";
+
+                //Table Headers
+                echo "<tr>";
+                    echo "<td>Image</td>";
+                    echo "<td> Name / Price / Description</td>";
+                echo "</tr>";
+                while($item_listing_begin_tag){
+                    //Search for the next product listing, if it does not exist, break from while loop 
+                    $pos = strpos($amazon_html, $item_listing_begin_tag, $pos);            
+                    if ($pos === false) {
+                        //echo "The string was not found";
+                        break;
+                    } 
+
+
+                    //extract name, picture, price, description
+                    //data-name="..."
+                    $pos_name_beginning = strpos($amazon_html, 'a-text-normal">', $pos);
+                    $pos_name_beginning = $pos_name_beginning + strlen('a-text-normal">');
+
+                    $pos_name_ending = strpos($amazon_html, '</h2></a>', $pos_name_beginning);
+                    $pos_name_ending = $pos_name_ending;
+                    $name_string_length = $pos_name_ending - $pos_name_beginning ;
+                    $name = substr($amazon_html, $pos_name_beginning, $name_string_length);
+
+                    //echo "name beg: $pos_name_beginning<br>";
+                    //echo "name end: $pos_name_ending<br>";
+                    //echo "name length: $name_string_length<br>";
+
+                    //data-price="..."
+                    $pos_price_beginning = strpos($amazon_html, '<span class="a-size-base a-color-price s-price a-text-bold">', $pos);
+                    $pos_price_beginning = $pos_price_beginning + strlen('<span class="a-size-base a-color-price s-price a-text-bold">');
+
+                    $pos_price_ending = strpos($amazon_html, '</span></a>', $pos_price_beginning);
+                    $pos_price_ending = $pos_price_ending;
+                    $price_string_length = $pos_price_ending - $pos_price_beginning;
+                    $price = substr($amazon_html, $pos_price_beginning, $price_string_length);
+                    //echo "price beg: $pos_price_beginning<br>";
+                    //echo "price end: $pos_price_ending<br>";
+                    //echo "price length: $price_string_length<br>";
+
+                    $pos_link_beginning = strpos($amazon_html, '<a class="a-link-normal a-text-normal" href=', $pos);
+                    $pos_link_beginning = $pos_link_beginning + strlen("<a class='a-link-normal a-text-normal' href=") + 1;
+
+                    $pos_link_ending = strpos($amazon_html, '">' , $pos_link_beginning);
+                    $pos_link_ending = $pos_link_ending;
+                    $link_string_length = $pos_link_ending - $pos_link_beginning;
+                    $link = /*"http://www.amazon.com" . */substr($amazon_html, $pos_link_beginning, $link_string_length);
+
+                    //Image
+                    $pos_img_beginning = strpos($amazon_html, '<img alt="Product Details" src="', $pos);
+                    $pos_img_beginning = $pos_img_beginning + strlen('<img alt="Product Details" src="');
+
+                    $pos_img_ending = strpos($amazon_html, '" onload="', $pos_img_beginning);
+                    $pos_img_ending = $pos_img_ending;
+                    $img_string_length = $pos_img_ending - $pos_img_beginning;
+                    $img = substr($amazon_html, $pos_img_beginning, $img_string_length);
+                    //echo "image beg: $pos_img_beginning<br>";
+                    //echo "image end: $pos_img_ending<br>";
+                    //echo "image length: $img_string_length<br>";
+                    /*
+                    //Description
+                    $pos_description_beginning = strpos($amazon_html, 'Product Description</span><br><span class="a-size-small a-color-secondary">', $pos);
+                    $pos_description_beginning = $pos_description_beginning + strlen('Product Description</span><br><span class="a-size-small a-color-secondary">');
+
+                    $pos_description_ending = strpos($amazon_html,'</span></div><div class="a-row a-spacing-mini"><div class="a-row a-spacing-mini">', $pos_description_beginning);
+                    $pos_description_ending = $pos_description_ending;
+                    $description_string_length = $pos_description_ending - $pos_description_beginning;
+                    $description = substr($amazon_html, $pos_description_beginning, $description_string_length);
+                    
+                    // Provides: <body text='black'>
+                    $description = str_replace("<li>", "", $description);
+                    $description = str_replace("<ul>", "", $description);
+                    $description = str_replace("<ol>", "", $description);
+                    $description = str_replace("</li>", "<br>", $description);
+
+                    //echo "description beg: $pos_description_beginning<br>";
+                    //echo "description end: $pos_description_ending<br>";
+                    //echo "description length: $description_string_length<br>";
+                    */
+                    // Note use of ===.  Simply == would not work as expected
+                    // because the position of 'a' was the 0th (first) character.
+                    //echo "The string was found and exists at position $pos.<br>";
+                    echo "<tr>";
+                        echo "<td><img src='$img' alt='thumbnail'></td>";
+
+                        echo "<td>";
+                        echo "<b>$name</b><br>";
+                        echo "<i>  <a href='$link'>$link</a>         </i><br><br>";
+
+                        echo "Price: $price<br><br>";
+                        //echo "$description";
+                        echo "</td>";
+                    echo "</tr>";
+
+
+                    $pos = $pos_img_ending;                    
+                }
+                echo "</table></div>";
+                //AMAZON PRODUCT LISTINGS
+
+                //MACY'S PRODUCT LISTING
+                $macys_url = 'http://www1.macys.com/shop/search?keyword=' . $_GET['best_buy_search_term'];
+                $macys_html = fread_url($macys_url);
+                $item_listing_begin_tag   = 'productThumbnailJSON';
+                $pos = 0;
+
+
+                echo "<div><table border='1'>";
+                echo "<caption>From Macy's</caption>";
+
+                //Table Headers
+                echo "<tr>";
+                    echo "<td>Image</td>";
+                    echo "<td> Name / Price / Description</td>";
+                echo "</tr>";
+                while(true){
+                    //Search for the next product listing, if it does not exist, break from while loop 
+                    $pos = strpos($macys_html, $item_listing_begin_tag, $pos);            
+                    if ($pos === false) {
+                        //echo "The string was not found";
+                        break;
+                    } 
+
+
+                    //extract name, picture, price, description
+                    //data-name="..."
+                    $pos_name_beginning = strpos($macys_html, "title=", $pos);
+                    $pos_name_beginning = $pos_name_beginning + strlen("title=") + 1;
+
+                    $pos_name_ending = strpos($macys_html, "alt=", $pos_name_beginning);
+                    $pos_name_ending = $pos_name_ending - 2;
+                    $name_string_length = $pos_name_ending - $pos_name_beginning ;
+                    $name = substr($macys_html, $pos_name_beginning, $name_string_length);
+
+                    //echo "name beg: $pos_name_beginning<br>";
+                    //echo "name end: $pos_name_ending<br>";
+                    //echo "name length: $name_string_length<br>";
+
+                    //data-price="..."
+                    $pos_price_beginning = strpos($macys_html, 'Reg. ', $pos);
+                    $pos_price_beginning = $pos_price_beginning + strlen('Reg. ');
+
+                    $pos_price_ending = strpos($macys_html, '</span><br />', $pos_price_beginning);
+                    $pos_price_ending = $pos_price_ending;
+                    $price_string_length = $pos_price_ending - $pos_price_beginning;
+                    $price = substr($macys_html, $pos_price_beginning, $price_string_length);
+                    //echo "price beg: $pos_price_beginning<br>";
+                    //echo "price end: $pos_price_ending<br>";
+                    //echo "price length: $price_string_length<br>";
+
+                    $pos_link_beginning = strpos($macys_html, '<a href="', $pos);
+                    $pos_link_beginning = $pos_link_beginning + strlen('<a href="');
+
+                    $pos_link_ending = strpos($macys_html, '" class=' , $pos_link_beginning);
+                    $pos_link_ending = $pos_link_ending;
+                    $link_string_length = $pos_link_ending - $pos_link_beginning;
+                    $link = "http://www1.macys.com" . substr($macys_html, $pos_link_beginning, $link_string_length);
+
+                    //Image
+                    $pos_img_beginning = strpos($macys_html, 'data-src="', $pos);
+                    $pos_img_beginning = $pos_img_beginning + strlen('data-src="');
+
+                    $pos_img_ending = strpos($macys_html, '"', $pos_img_beginning);
+                    $pos_img_ending = $pos_img_ending;
+                    $img_string_length = $pos_img_ending - $pos_img_beginning;
+                    $img = substr($macys_html, $pos_img_beginning, $img_string_length);
+                    //echo "image beg: $pos_img_beginning<br>";
+                    //echo "image end: $pos_img_ending<br>";
+                    //echo "image length: $img_string_length<br>";
+
+                    //Description
+                    /*
+                    $pos_description_ending = strpos($best_buy_html, "</div>", $pos_description_beginning);
+                    $pos_description_ending = $pos_description_ending;
+                    $description_string_length = $pos_description_ending - $pos_description_beginning;
+                    $description = substr($best_buy_html, $pos_description_beginning, $description_string_length);
+                    
+                    // Provides: <body text='black'>
+                    $description = str_replace("<li>", "", $description);
+                    $description = str_replace("<ul>", "", $description);
+                    $description = str_replace("<ol>", "", $description);
+                    $description = str_replace("</li>", "<br>", $description);
+                    */
+                    //echo "description beg: $pos_description_beginning<br>";
+                    //echo "description end: $pos_description_ending<br>";
+                    //echo "description length: $description_string_length<br>";
+                    
+                    // Note use of ===.  Simply == would not work as expected
+                    // because the position of 'a' was the 0th (first) character.
+                    //echo "The string was found and exists at position $pos.<br>";
+                    echo "<tr>";
+                        echo "<td><img src='$img' alt='thumbnail'></td>";
+
+                        echo "<td>";
+                        echo "<b>$name</b><br>";
+                        echo "<i>  <a href='$link'>$link</a>         </i><br><br>";
+
+                        echo "Price: $price<br><br>";
+                        //echo "$description";
+                        echo "</td>";
+                    echo "</tr>";
+
+
+                    $pos = $pos_img_ending;                    
+                }
+                echo "</table></div>";
+                //MACY'S PRODUCT LISTING
+
+
+                //NORDSTROM'S PRODUCT LISTING
+                                $nord_url = 'http://shop.nordstrom.com/sr?origin=keywordsearch&contextualcategoryid=2375500&keyword=' . $_GET['best_buy_search_term'];
+                $nord_html = fread_url($nord_url);
+                $item_listing_begin_tag   = '<span class="ada-hidden" id="ada-title">';
+                $pos = 0;
+
+
+                echo "<div class='nordtable'><table border='1'>";
+                echo "<caption>From Nordstrom's</caption>";
+
+                //Table Headers
+                echo "<tr>";
+                    echo "<td>Image</td>";
+                    echo "<td> Name / Price / Description</td>";
+                echo "</tr>";
+                while(true){
+                    //Search for the next product listing, if it does not exist, break from while loop 
+                    $pos = strpos($nord_html, $item_listing_begin_tag, $pos);            
+                    if ($pos === false) {
+                        //echo "The string was not found";
+                        break;
+                    } 
+
+
+                    //extract name, picture, price, description
+                    //data-name="..."
+                    $pos_name_beginning = strpos($nord_html, 'class="title">', $pos);
+                    $pos_name_beginning = $pos_name_beginning + strlen('class="title">');
+
+                    $pos_name_ending = strpos($nord_html, '</a><span class="price', $pos_name_beginning);
+                    $pos_name_ending = $pos_name_ending;
+                    $name_string_length = $pos_name_ending - $pos_name_beginning ;
+                    $name = substr($nord_html, $pos_name_beginning, $name_string_length);
+
+                    //echo "name beg: $pos_name_beginning<br>";
+                    //echo "name end: $pos_name_ending<br>";
+                    //echo "name length: $name_string_length<br>";
+
+                    //data-price="..."
+                    $pos_price_beginning = strpos($nord_html, '<span class="price regular">', $pos);
+                    $pos_price_beginning = $pos_price_beginning + strlen('<span class="price regular">');
+
+                    $pos_price_ending = strpos($nord_html, '</span>', $pos_price_beginning);
+                    $pos_price_ending = $pos_price_ending;
+                    $price_string_length = $pos_price_ending - $pos_price_beginning;
+                    $price = substr($nord_html, $pos_price_beginning, $price_string_length);
+                    //echo "price beg: $pos_price_beginning<br>";
+                    //echo "price end: $pos_price_ending<br>";
+                    //echo "price length: $price_string_length<br>";
+
+                    $pos_link_beginning = strpos($nord_html, '" href="', $pos);
+                    $pos_link_beginning = $pos_link_beginning + strlen('" href="');
+
+                    $pos_link_ending = strpos($nord_html, '" class="title">' , $pos_link_beginning);
+                    $pos_link_ending = $pos_link_ending;
+                    $link_string_length = $pos_link_ending - $pos_link_beginning;
+                    $link = "http://shop.nordstrom.com" . substr($nord_html, $pos_link_beginning, $link_string_length);
+
+                    //Image
+                    $pos_img_beginning = strpos($nord_html, 'data-original="', $pos);
+                    $pos_img_beginning = $pos_img_beginning + strlen('data-original="');
+
+                    $pos_img_ending = strpos($nord_html, '" />', $pos_img_beginning);
+                    $pos_img_ending = $pos_img_ending;
+                    $img_string_length = $pos_img_ending - $pos_img_beginning;
+                    $img = substr($nord_html, $pos_img_beginning, $img_string_length);
+                    //echo "image beg: $pos_img_beginning<br>";
+                    //echo "image end: $pos_img_ending<br>";
+                    //echo "image length: $img_string_length<br>";
+
+                    //Description
+                    /*
+                    $pos_description_ending = strpos($best_buy_html, "</div>", $pos_description_beginning);
+                    $pos_description_ending = $pos_description_ending;
+                    $description_string_length = $pos_description_ending - $pos_description_beginning;
+                    $description = substr($best_buy_html, $pos_description_beginning, $description_string_length);
+                    
+                    // Provides: <body text='black'>
+                    $description = str_replace("<li>", "", $description);
+                    $description = str_replace("<ul>", "", $description);
+                    $description = str_replace("<ol>", "", $description);
+                    $description = str_replace("</li>", "<br>", $description);
+                    */
+                    //echo "description beg: $pos_description_beginning<br>";
+                    //echo "description end: $pos_description_ending<br>";
+                    //echo "description length: $description_string_length<br>";
+                    
+                    // Note use of ===.  Simply == would not work as expected
+                    // because the position of 'a' was the 0th (first) character.
+                    //echo "The string was found and exists at position $pos.<br>";
+                    echo "<tr>";
+                        echo "<td><img src='$img' alt='thumbnail'></td>";
+
+                        echo "<td>";
+                        echo "<b>$name</b><br>";
+                        echo "<i>  <a href='$link'>$link</a>         </i><br><br>";
+
+                        echo "Price: $price<br><br>";
+                        //echo "$description";
+                        echo "</td>";
+                    echo "</tr>";
+
+
+                    $pos = $pos_img_ending;                    
+                }
+                echo "</table></div>";
+                //NORDSTROM'S PRODUCT LISTING
+
             }
 
         //uncomment the following block to search for some hyperlinks listed on the website page located at url_base_to_crawl

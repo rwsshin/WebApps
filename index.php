@@ -180,7 +180,7 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#4C4CFF;'>
 	    <h4><u>Best Buy</u></h4>
 	  	<br>
-	      <a href='$link'><img src='$img' width='125px' alt='...'></a><br>
+	      <a href='$link'><img src='$img' style='height:150px;'  alt='...'></a><br>
 	        <b>$name</b><br>
 	        \$$price<br><br>
 	        <a href='$link' class='btn btn-primary' role='button'>Link</a>
@@ -288,7 +288,7 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#9F5100;'>
 	    <h4><u>RadioShack</u></h4>
 	  	<br>
-	      <a href='$item_link'><img src='$image' width='100' alt='...'></a><br>
+	      <a href='$item_link'><img src='$image' style='height:150px;'  alt='...'></a><br>
 	        <b>$title</b><br>
 	        \$$price<br><br>
 	        <a href='$item_link' class='btn btn-primary' role='button'>Link</a>
@@ -434,7 +434,7 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#B20000;'>
 	    <h4><u>Target</u></h4>
 	  	<br>
-	      <a href='$item_link'><img src='$image' width='100' alt='...'></a><br>
+	      <a href='$item_link'><img src='$image' style='height:150px;' alt='...'></a><br>
 	        <b>$title</b><br>
 	        \$$price<br><br>
 	        <a href='$item_link' class='btn btn-primary' role='button'>Link</a>
@@ -553,7 +553,7 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#FFA500;'>
 	    <h4><u>Amazon</u></h4>
 	  	<br>
-	      <a href='$link'><img src='$img' width='100' alt='...'></a><br>
+	      <a href='$link'><img src='$img' style='height:150px;'  alt='...'></a><br>
 	        <b>$name</b><br>
 	        $price<br><br>
 	        <a href='$link' class='btn btn-primary' role='button'>Link</a>
@@ -665,7 +665,7 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#FF0000;'>
 	    <h4><u>Macy's</u></h4>
 	  	<br>
-	      <a href='$link'><img src='$img' width='100' alt='...'></a><br>
+	      <a href='$link'><img src='$img' style='height:150px;' alt='...'></a><br>
 	        <b>$name</b><br>
 	        $price<br><br>
 	        <a href='$link' class='btn btn-primary' role='button'>Link</a>
@@ -780,7 +780,7 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#CCCCCC;'>
 	    <h4><u>Nordstrom</u></h4>
 	  	<br>
-	      <a href='$link'><img src='$img' width='100' alt='...'></a><br>
+	      <a href='$link'><img src='$img' style='height:150px;' alt='...'></a><br>
 	        <b>$name</b><br>
 	        $price<br><br>
 	        <a href='$link' class='btn btn-primary' role='button'>Link</a>

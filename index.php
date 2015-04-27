@@ -41,7 +41,7 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 		      </button>
-		      <a class="navbar-brand" href="#">WebApps</a>
+		      <a class="navbar-brand" href="index.php">WebApps</a>
 		    </div>
 
 		    <p class="navbar-text"> | </p>
@@ -64,25 +64,44 @@
 	          <p class="navbar-text">Analyze</p>
   		      <form class="navbar-form navbar-left" role="search">
 		        <div class="form-group">
-		          <input type="text" class="form-control" placeholder="http://">
+		          <input type="text" class="form-control" name="parse_url" placeholder="http://">
 		        </div>
-		        <button type="submit" class="btn btn-default">Parse</button>
+		        <button type="submit" class="btn btn-default" name="parse_button">Parse</button>
 		      </form>
 
   		      <p class="navbar-text"> | </p>
 
 
-
+<!--
 		      <ul class="nav navbar-nav navbar-right">
-		        <li><a href="#">Members Center</a></li>
+		         <li><a href="#">Members Center</a></li> 
 		      </ul>
+-->
 		    </div><!-- /.navbar-collapse -->
 		  </div><!-- /.container-fluid -->
 		</nav>
 
 
 		<?php
-		 	 if(isset($_GET['search_button']) && isset($_GET['search_term'])){
+			if(!isset($_GET['search_button']) && !isset($_GET['parse_button'])){
+				echo
+				"  <div class='container'>
+				<div class='jumbotron'>
+				  <h1>Basic Web Crawler</h1>
+				  <h4>Spring 2015</h4>
+				  <h2>Lisa Huang - Won Seok Shin</h2>
+				  <p>
+				  For our final project in professor Lowrie's Web Apps class, we decided to implement a web crawler. A web crawler follows links iteratively to scrape relevant information from the html content of each visited link.
+				  </p>
+				  <p>
+				  The first component of our implementation parses the html of http GET search requests from Best Buy, RadioShack, Target, Amazon, Macy's, and Nordstrom. The html parsing must be supervised and done manually. This is not an efficient method, and often causes errors due to unpredictible html content that is returned. Furthermore, the html content that is returned from each of these company's websites is subject to change over time if the websites are updated and the structure of the underlying code is changed. Nonetheless, meaningul results are returned, and basic web scraping techniques through string manipulations were insightful. <b>One surefire way of producing a parsing error is to search a name, such as Britney Spears. This is because of the way that Best Buy's website is structured and the way that our crawler attempts to parse through the html.</b>
+				  </p>
+				  <p><a class='btn btn-primary btn-lg' href='#'' role='button'>Learn more</a></p>
+				</div>
+				</div>"
+				;
+			}
+		 	 else if(isset($_GET['search_button']) && isset($_GET['search_term'])){
 $search_term = $_GET['search_term'];
 echo "<span class='label label-success'>Showing Search Results for: $search_term</span><br>";
 echo "<span class='label label-primary'>Searches are done on Best Buy, RadioShack, Target, Amazon, Macy's, and Nordstrom.</span><br>";

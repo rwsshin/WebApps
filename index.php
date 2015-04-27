@@ -16,6 +16,59 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+	<script type="text/javascript">
+		function getLinks() { 
+
+			//var rawHTML = '<html><body><a href="foo">bar</a><a href="narf">zort</a></body></html>';
+
+
+			
+
+			var doc = document.createElement("html");
+			doc.innerHTML = document.getElementById("ahrefs").innerHTML;
+			var links = doc.getElementsByTagName("a")
+			//var urls = [];
+
+			var ahrefLinks = "<b>Anchor Tags:</b><br>===================================<br>";
+			for (var i=0; i<links.length; i++) {
+				ahrefLinks = ahrefLinks + links[i].getAttribute("href") + "<br>";
+				//urls.push(links[i].getAttribute("href"));
+			}
+
+/*
+			var m;
+			var str = '<img src="http://site.org/one.jpg />\n <img src="http://site.org/two.jpg />',
+			var rex = /<img[^>]+src="?([^"\s]+)"?\s*\/>/g;
+
+			while ( m = rex.exec( str ) ) {
+				ahrefLinks = ahrefLinks + m[1] + "<br>";
+			}
+*/
+
+
+
+			var imglinks = doc.getElementsByTagName("img")
+			//var urls = [];
+			
+			ahrefLinks = ahrefLinks + "<br><br><br><br><br><b>Image Links:" + "</b><br>===================================<br>";
+			for (var i=0; i<imglinks.length; i++) {
+				ahrefLinks = ahrefLinks + imglinks[i].getAttribute("src") + "<br>";
+				//urls.push(links[i].getAttribute("href"));
+			}
+
+
+
+			document.getElementById("ahrefs").innerHTML = ahrefLinks;
+
+
+
+
+			//alert(urls[0]);
+
+		}
+	</script>
+
   </head>
   <body>
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -101,7 +154,20 @@
 				</div>"
 				;
 			}
+			else if(isset($_GET['parse_button']) && isset($_GET['parse_url'])){
+
+				   $parse_url = $_GET['parse_url'];
+	               $html_to_parse = fread_url($parse_url);
+
+   				   echo "<label id='ahrefs'>$html_to_parse</label>";
+
+
+             	    echo "<script> getLinks(); </script>";
+             	    //'uploadPostComment($parentID, $comment);
+
+			}
 		 	 else if(isset($_GET['search_button']) && isset($_GET['search_term'])){
+			
 $search_term = $_GET['search_term'];
 echo "<span class='label label-success'>Showing Search Results for: $search_term</span><br>";
 echo "<span class='label label-primary'>Searches are done on Best Buy, RadioShack, Target, Amazon, Macy's, and Nordstrom.</span><br>";

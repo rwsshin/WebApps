@@ -122,7 +122,11 @@
 		        <button type="submit" class="btn btn-default" name="parse_button">Parse</button>
 		      </form>
 
-  		      <p class="navbar-text"> | </p>
+  		      <form class="navbar-form navbar-left" role="search">
+		        <button type="submit" class="btn btn-default" name="members_area_button">Members Area</button>
+		      </form>
+
+
 
 
 <!--
@@ -136,7 +140,57 @@
 
 
 		<?php
-			if(!isset($_GET['search_button']) && !isset($_GET['parse_button'])){
+			if(isset($_GET['members_area_button']) || isset($_GET['register']) || isset($_GET['login'])){
+				if(!isset($_GET['register']) && !isset($_GET['login'])){
+				echo "
+
+<form method='get'>
+					<div class='container' style='height:400px; width:700px;'>
+						<div class='jumbotron'>
+							<h1>Members Area</h1>
+							<p>Log in or sign up to keep track of favorite products.</p>
+
+							<div class='input-group'>
+								<span class='input-group-addon' id='basic-addon1'>Username</span>
+								<input type='text' class='form-control' name='username' placeholder='Username' aria-describedby='basic-addon1'>
+							</div>
+
+							<br>
+
+							<div class='input-group'>
+								<span class='input-group-addon' id='basic-addon1'>Password</span>
+								<input type='text' class='form-control' name='password' placeholder='Password' aria-describedby='basic-addon1'>
+							</div>
+
+							<br><br>
+
+							<input type='submit' name='register' value='Register'>
+							<input type='submit' name='login' value='Log In'>
+						</div>
+				  	</div>
+</form>";
+}
+else{
+	if(isset($_GET['register']) && isset($_GET['username']) && isset($_GET['password']) ){
+		if(!lookupmemberusername($_GET['username'])){
+			insertnewmember($_GET['username'], $_GET['password']);
+		}
+	}
+	else if(isset($_GET['login']) && isset($_GET['username']) && isset($_GET['password']) ){
+		if(loginmember($_GET['username'], $_GET['password'])){
+			echo "LOGIN SUCCESSFUL";
+			echo "<input type='hidden' name='register' value='Register'>";
+			echo "<input type='hidden' name='login' value='Log In'>";
+			$member_favorites = getfavorites($_GET['username']);
+			echo "$member_favorites";
+		}
+		else{
+			echo "LOGIN UNSUCCESSFUL";
+		}
+	}
+}
+			}
+			else if(!isset($_GET['search_button']) && !isset($_GET['parse_button'])){
 				echo
 				"  <div class='container'>
 				<div class='jumbotron'>
@@ -149,7 +203,6 @@
 				  <p>
 				  The first component of our implementation parses the html of http GET search requests from Best Buy, RadioShack, Target, Amazon, Macy's, and Nordstrom. The html parsing must be supervised and done manually. This is not an efficient method, and often causes errors due to unpredictible html content that is returned. Furthermore, the html content that is returned from each of these company's websites is subject to change over time if the websites are updated and the structure of the underlying code is changed. Nonetheless, meaningul results are returned, and basic web scraping techniques through string manipulations were insightful. <b>One surefire way of producing a parsing error is to search a name, such as Britney Spears. This is because of the way that Best Buy's website is structured and the way that our crawler attempts to parse through the html.</b>
 				  </p>
-				  <p><a class='btn btn-primary btn-lg' href='#'' role='button'>Learn more</a></p>
 				</div>
 				</div>"
 				;
@@ -933,5 +986,105 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 		        return $html;
 		    }
 		?>
+
+
+
+
+		<?php
+	function getfavorites($username){
+		$conn = mysqli_connect("localhost", "shinw", "Z57EBjVi", "shinw");
+		if (mysqli_connect_errno()) {
+		    printf("Connect failed: %s\n", mysqli_connect_error());
+		    exit();
+		}
+
+	   	$query = "SELECT favorites FROM crawler WHERE username='$username'";
+
+	   	$favorites = "";
+
+
+		if ($result = mysqli_query($conn, $query)) {
+	   		while ($row = mysqli_fetch_assoc($result)) {
+	   			$favorites = $row['favorites'];
+	   		}
+		    mysqli_free_result($result);
+		}
+	 	mysqli_close($conn);
+
+	 	return $favorites;
+	}
+
+	function lookupmemberusername($username){
+		$conn = mysqli_connect("localhost", "shinw", "Z57EBjVi", "shinw");
+		if (mysqli_connect_errno()) {
+		    printf("Connect failed: %s\n", mysqli_connect_error());
+		    exit();
+		}
+
+	   	$query = "SELECT * FROM crawler WHERE username='$username'";
+
+	   	$memberfound = false;
+
+		if ($result = mysqli_query($conn, $query)) {
+	   		while ($row = mysqli_fetch_assoc($result)) {
+	   			$memberfound = true;
+	   		}
+		    mysqli_free_result($result);
+		}
+	 	mysqli_close($conn);
+
+	 	return $memberfound;
+	}
+
+	function loginmember($username, $password){
+		$conn = mysqli_connect("localhost", "shinw", "Z57EBjVi", "shinw");
+		if (mysqli_connect_errno()) {
+		    printf("Connect failed: %s\n", mysqli_connect_error());
+		    exit();
+		}
+
+	   	$query = "SELECT * FROM crawler WHERE username='$username' AND password='$password'";
+
+	   	$memberfound = false;
+
+		if ($result = mysqli_query($conn, $query)) {
+	   		while ($row = mysqli_fetch_assoc($result)) {
+	   			$memberfound = true;
+	   		}
+		    mysqli_free_result($result);
+		}
+	 	mysqli_close($conn);
+
+	 	return $memberfound;
+	}
+
+	function insertmemberfavorite($username, $favorite){
+		$conn = mysqli_connect("localhost", "shinw", "Z57EBjVi", "shinw");
+		if (mysqli_connect_errno()) {
+		    printf("Connect failed: %s\n", mysqli_connect_error());
+		    exit();
+		}
+
+		$query = "UPDATE crawler SET favorites='$favorite' WHERE username='$username'";
+		$result = mysqli_query($conn, $query);
+	 	mysqli_close($conn);
+	}
+
+	function insertnewmember($username, $password){
+		$conn = mysqli_connect("localhost", "shinw", "Z57EBjVi", "shinw");
+		if (mysqli_connect_errno()) {
+		    printf("Connect failed: %s\n", mysqli_connect_error());
+		    exit();
+		}
+
+		$query = "INSERT INTO crawler (username, password, favorites)
+		   			   VALUES ('$username', '$password', '')";
+		$result = mysqli_query($conn, $query);
+	 	mysqli_close($conn);
+	}
+
+
+
+?>
   </body>
 </html>

@@ -1,3 +1,24 @@
+<?php
+	if(isset($_GET['login']) && isset($_GET['username']) && isset($_GET['password']) ){
+			if(loginmember($_GET['username'], $_GET['password'])){
+				$loginInfo = $_GET['username'] . "," . $_GET['password'];
+				setcookie('username', $_GET['username'] ); 
+				setcookie('password', $_GET['password']); 
+
+				if (isset($_COOKIE['logininfo'])) {
+					//echo $_COOKIE['logininfo'];
+					//echo "YAY COOKIE IS SET";
+					$favoritesRetrieved = getfavorites($_GET['username']);
+					//echo "$_GET['username']";
+					echo "The favorites are: $favoritesRetrieved";
+				}
+			}
+			else{
+				echo "LOGIN UNSUCCESSFUL";
+			}
+	}	
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -313,7 +334,14 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 		                    // Note use of ===.  Simply == would not work as expected
 		                    // because the position of 'a' was the 0th (first) character.
 		                    //echo "The string was found and exists at position $pos.<br>";
-	echo "
+		                    $showAddToFavorites = "";
+		                    $formatedFavoritesInfo = "$link,$img,$name,$price";
+		                    if(isset($_COOKIE['logininfo'])){
+								$showAddToFavorites = "<a href='http://cscilab.bc.edu/~shinw/wonseokshin/assignments/finalproject/appendfavorites.php' class='btn btn-primary' role='button'>Add</a> 
+									<input type='submit' name='favoritesButton' value='$formatedFavoritesInfo'>";
+
+		                    }
+	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
 	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#4C4CFF;'>
 	    <h4><u>Best Buy</u></h4>
@@ -321,10 +349,10 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 	      <a href='$link'><img src='$img' style='height:150px;'  alt='...'></a><br>
 	        <b>$name</b><br>
 	        \$$price<br><br>
-	        <a href='$link' class='btn btn-primary' role='button'>Link</a>
+	        <a href='$link' class='btn btn-primary' role='button'>Link</a>$showAddToFavorites
 	    </div>
 	  </div>
-	";
+	</form>";
 
 	 
 
@@ -421,7 +449,16 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 		                    // Note use of ===.  Simply == would not work as expected
 		                    // because the position of 'a' was the 0th (first) character.
 		                    //echo "The string was found and exists at position $pos.<br>";
-	echo "
+
+		                    $showAddToFavorites = "";
+		                    $formatedFavoritesInfo = "$item_link,$image,$title,$price";
+		                    if(isset($_COOKIE['logininfo'])){
+								$showAddToFavorites = "<a href='http://cscilab.bc.edu/~shinw/wonseokshin/assignments/finalproject/appendfavorites.php' class='btn btn-primary' role='button'>Add</a> 
+									<input type='submit' name='favoritesButton' value='$formatedFavoritesInfo'>";
+
+		                    }
+
+	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
 	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#9F5100;'>
 	    <h4><u>RadioShack</u></h4>
@@ -429,10 +466,10 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 	      <a href='$item_link'><img src='$image' style='height:150px;'  alt='...'></a><br>
 	        <b>$title</b><br>
 	        \$$price<br><br>
-	        <a href='$item_link' class='btn btn-primary' role='button'>Link</a>
+	        <a href='$item_link' class='btn btn-primary' role='button'>Link</a>$showAddToFavorites
 	    </div>
 	  </div>
-	";
+	</form>";
 
 
 		                    $pos = $pos_link_ending;                 
@@ -566,8 +603,15 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 		                    // Note use of ===.  Simply == would not work as expected
 		                    // because the position of 'a' was the 0th (first) character.
 		                    //echo "The string was found and exists at position $pos.<br>";
+		                    $showAddToFavorites = "";
+		                    $formatedFavoritesInfo = "$item_link,$image,$title,$price";
+		                    if(isset($_COOKIE['logininfo'])){
+								$showAddToFavorites = "<a href='http://cscilab.bc.edu/~shinw/wonseokshin/assignments/finalproject/appendfavorites.php' class='btn btn-primary' role='button'>Add</a> 
+									<input type='submit' name='favoritesButton' value='$formatedFavoritesInfo'>";
 
-	echo "
+		                    }
+
+	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
 	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#B20000;'>
 	    <h4><u>Target</u></h4>
@@ -575,10 +619,10 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 	      <a href='$item_link'><img src='$image' style='height:150px;' alt='...'></a><br>
 	        <b>$title</b><br>
 	        \$$price<br><br>
-	        <a href='$item_link' class='btn btn-primary' role='button'>Link</a>
+	        <a href='$item_link' class='btn btn-primary' role='button'>Link</a>$showAddToFavorites
 	    </div>
 	  </div>
-	";
+	</form>";
 
 		                    $pos = $pos_link_ending;                 
 		                }
@@ -686,7 +730,15 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 		                    	$price = substr($price, 0, 100);
 		                    }
 
-	echo "
+		                    $showAddToFavorites = "";
+		                    $formatedFavoritesInfo = "$link,$img,$name,$price";
+		                    if(isset($_COOKIE['logininfo'])){
+								$showAddToFavorites = "<a href='http://cscilab.bc.edu/~shinw/wonseokshin/assignments/finalproject/appendfavorites.php' class='btn btn-primary' role='button'>Add</a> 
+									<input type='submit' name='favoritesButton' value='$formatedFavoritesInfo'>";
+
+		                    }
+
+	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
 	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#FFA500;'>
 	    <h4><u>Amazon</u></h4>
@@ -694,10 +746,10 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 	      <a href='$link'><img src='$img' style='height:150px;'  alt='...'></a><br>
 	        <b>$name</b><br>
 	        $price<br><br>
-	        <a href='$link' class='btn btn-primary' role='button'>Link</a>
+	        <a href='$link' class='btn btn-primary' role='button'>Link</a>$showAddToFavorites
 	    </div>
 	  </div>
-	";
+	</form>";
 
 
 		                    $pos = $pos_img_ending;                    
@@ -798,7 +850,15 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 		                    	$price = 'Price Parse Error';
 		                    }
 
-	echo "
+		                    $showAddToFavorites = "";
+		                    $formatedFavoritesInfo = "$link,$img,$name,$price";
+		                    if(isset($_COOKIE['logininfo'])){
+								$showAddToFavorites = "<a href='http://cscilab.bc.edu/~shinw/wonseokshin/assignments/finalproject/appendfavorites.php' class='btn btn-primary' role='button'>Add</a> 
+									<input type='submit' name='favoritesButton' value='$formatedFavoritesInfo'>";
+
+		                    }
+
+	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
 	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#FF0000;'>
 	    <h4><u>Macy's</u></h4>
@@ -806,10 +866,10 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 	      <a href='$link'><img src='$img' style='height:150px;' alt='...'></a><br>
 	        <b>$name</b><br>
 	        $price<br><br>
-	        <a href='$link' class='btn btn-primary' role='button'>Link</a>
+	        <a href='$link' class='btn btn-primary' role='button'>Link</a>$showAddToFavorites
 	    </div>
 	  </div>
-	";
+	</form>";
 
 
 		                    $pos = $pos_img_ending;                    
@@ -913,7 +973,16 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 		                    	$price = 'Price Parse Error';
 		                    }
 
-	echo "
+		                    $showAddToFavorites = "";
+		                    $formatedFavoritesInfo = "$link,$img,$name,$price";
+		                    if(isset($_COOKIE['logininfo'])){
+								$showAddToFavorites = "<a href='http://cscilab.bc.edu/~shinw/wonseokshin/assignments/finalproject/appendfavorites.php' class='btn btn-primary' role='button'>Add</a> 
+									<input type='submit' name='favoritesButton' value='$formatedFavoritesInfo'>";
+
+		                    }
+
+
+	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
 	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#CCCCCC;'>
 	    <h4><u>Nordstrom</u></h4>
@@ -921,10 +990,10 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 	      <a href='$link'><img src='$img' style='height:150px;' alt='...'></a><br>
 	        <b>$name</b><br>
 	        $price<br><br>
-	        <a href='$link' class='btn btn-primary' role='button'>Link</a>
+	        <a href='$link' class='btn btn-primary' role='button'>Link</a>$showAddToFavorites
 	    </div>
 	  </div>
-	";
+	</form>";
 
 		                    $pos = $pos_img_ending;                    
 		                }

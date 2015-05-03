@@ -180,7 +180,7 @@
 
 							<div class='input-group'>
 								<span class='input-group-addon' id='basic-addon1'>Password</span>
-								<input type='text' class='form-control' name='password' placeholder='Password' aria-describedby='basic-addon1'>
+								<input type='password' class='form-control' name='password' placeholder='Password' aria-describedby='basic-addon1'>
 							</div>
 
 							<br><br>
@@ -343,7 +343,7 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 		                    }
 	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
-	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#4C4CFF;'>
+	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#99ADEB;'>
 	    <h4><u>Best Buy</u></h4>
 	  	<br>
 	      <a href='$link'><img src='$img' style='height:150px;'  alt='...'></a><br>
@@ -460,7 +460,7 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 
 	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
-	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#9F5100;'>
+	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#E1A76C;'>
 	    <h4><u>RadioShack</u></h4>
 	  	<br>
 	      <a href='$item_link'><img src='$image' style='height:150px;'  alt='...'></a><br>
@@ -613,7 +613,8 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 
 	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
-	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#B20000;'>
+	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#FF5959
+;'>
 	    <h4><u>Target</u></h4>
 	  	<br>
 	      <a href='$item_link'><img src='$image' style='height:150px;' alt='...'></a><br>
@@ -740,7 +741,7 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 
 	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
-	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#FFA500;'>
+	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#FFC266;'>
 	    <h4><u>Amazon</u></h4>
 	  	<br>
 	      <a href='$link'><img src='$img' style='height:150px;'  alt='...'></a><br>
@@ -860,7 +861,7 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 
 	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
-	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#FF0000;'>
+	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#FF4D4D;'>
 	    <h4><u>Macy's</u></h4>
 	  	<br>
 	      <a href='$link'><img src='$img' style='height:150px;' alt='...'></a><br>
@@ -984,7 +985,7 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 
 	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
-	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#CCCCCC;'>
+	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#C0C0C0 ;'>
 	    <h4><u>Nordstrom</u></h4>
 	  	<br>
 	      <a href='$link'><img src='$img' style='height:150px;' alt='...'></a><br>

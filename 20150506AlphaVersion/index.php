@@ -51,7 +51,6 @@
 
 
 
-
  		//header('Location: index.php');
  	}
 ?>
@@ -76,6 +75,10 @@
     <![endif]-->
 
 	<script type="text/javascript">
+		function display(itemname){
+			alert("Item Added. " + itemname);
+		}
+
 		function getLinks() { 
 
 			//var rawHTML = '<html><body><a href="foo">bar</a><a href="narf">zort</a></body></html>';
@@ -209,7 +212,7 @@
 
 
 		<?php
-			if(isset($_GET['itemnamesubmit'])){
+			/*if(isset($_GET['itemnamesubmit'])){
 				$currentFavorites = getfavorites($usernameToAppendTo);
 				$currentFavorites = explode(",", $currentFavorites);
 				//"$link,$img,$name,$price,store";
@@ -226,11 +229,12 @@
 				   }
 				}
 
+				echo "This should print after redirecting when add to favorites is clicked";
 				echo "<br><br><br><a href='logout.php'>Logout</a>";
 				echo "<br><br><br><a href='googlespreadsheet.php'>As Google Spreadsheet</a>";
 
 			}
-			else if(isset($_GET['members_area_button']) || isset($_GET['register']) || isset($_GET['login'])){
+			else*/ if(isset($_GET['members_area_button']) || isset($_GET['register']) || isset($_GET['login'])){
 				if(!isset($_GET['register']) && !isset($_GET['login']) && !isset($_COOKIE['username'] )){
 				echo "
 
@@ -249,7 +253,7 @@
 
 							<div class='input-group'>
 								<span class='input-group-addon' id='basic-addon1'>Password</span>
-								<input type='text' class='form-control' name='password' placeholder='Password' aria-describedby='basic-addon1'>
+								<input type='password' class='form-control' name='password' placeholder='Password' aria-describedby='basic-addon1'>
 							</div>
 
 							<br><br>
@@ -356,11 +360,24 @@ else{
 
 			}
 		 	 else if(isset($_GET['search_button']) && isset($_GET['search_term'])){
+
 			
 $search_term = $_GET['search_term'];
+$search_term2 = $_GET['search_term'];
+
+$nameToAdd = "";
+if(isset($_GET['itemnamesubmit'])){
+		$listingToAdd = $_GET['itemname'];
+		$listingToAdd = explode(",", $listingToAdd);
+		$nameToAdd = $listingToAdd[3];
+}
+				if(isset($_GET['itemnamesubmit'])){
+		 	 	    echo "<script type='text/javascript'>display('$nameToAdd');</script>";
+		 	 	}
+
 echo "<span class='label label-success'>Showing Search Results for: $search_term</span><br>";
-echo "<span class='label label-primary'>Searches are done on Best Buy, RadioShack, Target, Amazon, Macy's, and Nordstrom.</span><br>";
-echo "<span class='label label-danger'>Search terms may cause crashes. Infinite loops may occur when the search term is a name i.e. Britney Spears.</span><br><br>";
+echo "<span class='label label-primary'>Searches are done on Best Buy, RadioShack, Target, Amazon, Macy's, and Nordstrom.</span><br><br>";
+//echo "<span class='label label-danger'>Search terms may cause crashes. Infinite loops may occur when the search term is a name i.e. Britney Spears.</span><br><br>";
 
 		 	 	// Provides: <body text='black'>
 				$search_term = str_replace(" ", "+", $_GET['search_term']);
@@ -473,12 +490,16 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 		                    if(isset($_COOKIE['username'])){
 
 									$formatedFavoritesInfo = $_COOKIE['username'] . ',' . $formatedFavoritesInfo;
-									$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'><input type='hidden' name='itemname' value='$formatedFavoritesInfo'>";
+									$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'>
+									<input type='hidden' name='itemname' value='$formatedFavoritesInfo'>
+									<input type='hidden' name='search_button' value='clicked'>
+									<input type='hidden' name='search_term' value='$search_term2'>
+									";
 
 		                    }
 	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
-	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#4C4CFF;'>
+	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#99ADEB;'>
 	    <h4><u>Best Buy</u></h4>
 	  	<br>
 	      <a href='$link'><img src='$img' style='height:150px;'  alt='...'></a><br>
@@ -594,7 +615,12 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 		                    $formatedFavoritesInfo = "$item_link,$image,$title,$price,RadioShack";
 		                    if(isset($_COOKIE['username'])){
 									$formatedFavoritesInfo = $_COOKIE['username'] . ',' . $formatedFavoritesInfo;
-									$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'><input type='hidden' name='itemname' value='$formatedFavoritesInfo'>";
+									//$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'><input type='hidden' name='itemname' value='$formatedFavoritesInfo'>";
+									$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'>
+									<input type='hidden' name='itemname' value='$formatedFavoritesInfo'>
+									<input type='hidden' name='search_button' value='clicked'>
+									<input type='hidden' name='search_term' value='$search_term2'>
+									";
 
 		                    }
 
@@ -602,7 +628,7 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 
 	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
-	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#9F5100;'>
+	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#E1A76C;'>
 	    <h4><u>RadioShack</u></h4>
 	  	<br>
 	      <a href='$item_link'><img src='$image' style='height:150px;'  alt='...'></a><br>
@@ -750,13 +776,18 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 		                    $formatedFavoritesInfo = "$item_link,$image,$title,$price,Target";
 		                    if(isset($_COOKIE['username'])){
 									$formatedFavoritesInfo = $_COOKIE['username'] . ',' . $formatedFavoritesInfo;
-									$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'><input type='hidden' name='itemname' value='$formatedFavoritesInfo'>";
+									//$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'><input type='hidden' name='itemname' value='$formatedFavoritesInfo'>";
+									$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'>
+									<input type='hidden' name='itemname' value='$formatedFavoritesInfo'>
+									<input type='hidden' name='search_button' value='clicked'>
+									<input type='hidden' name='search_term' value='$search_term2'>
+									";
 
 		                    }
 
 	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
-	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#B20000;'>
+	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#FF5959;'>
 	    <h4><u>Target</u></h4>
 	  	<br>
 	      <a href='$item_link'><img src='$image' style='height:150px;' alt='...'></a><br>
@@ -878,13 +909,18 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 		                    $formatedFavoritesInfo = "$link,$img,$name,$price,Amazon";
 		                    if(isset($_COOKIE['username'])){
 									$formatedFavoritesInfo = $_COOKIE['username'] . ',' . $formatedFavoritesInfo;
-									$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'><input type='hidden' name='itemname' value='$formatedFavoritesInfo'>";
+									//$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'><input type='hidden' name='itemname' value='$formatedFavoritesInfo'>";
+									$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'>
+									<input type='hidden' name='itemname' value='$formatedFavoritesInfo'>
+									<input type='hidden' name='search_button' value='clicked'>
+									<input type='hidden' name='search_term' value='$search_term2'>
+									";
 
 		                    }
 
 	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
-	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#FFA500;'>
+	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#FFC266;'>
 	    <h4><u>Amazon</u></h4>
 	  	<br>
 	      <a href='$link'><img src='$img' style='height:150px;'  alt='...'></a><br>
@@ -999,13 +1035,18 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 		                    $formatedFavoritesInfo = "$link,$img,$name,$price,Macy's";
 		                    if(isset($_COOKIE['username'])){
 									$formatedFavoritesInfo = $_COOKIE['username'] . ',' . $formatedFavoritesInfo;
-									$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'><input type='hidden' name='itemname' value='$formatedFavoritesInfo'>";
+									//$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'><input type='hidden' name='itemname' value='$formatedFavoritesInfo'>";
+									$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'>
+									<input type='hidden' name='itemname' value='$formatedFavoritesInfo'>
+									<input type='hidden' name='search_button' value='clicked'>
+									<input type='hidden' name='search_term' value='$search_term2'>
+									";
 
 		                    }
 
 	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
-	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#FF0000;'>
+	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#FF4D4D;'>
 	    <h4><u>Macy's</u></h4>
 	  	<br>
 	      <a href='$link'><img src='$img' style='height:150px;' alt='...'></a><br>
@@ -1123,13 +1164,18 @@ echo "<span class='label label-danger'>Search terms may cause crashes. Infinite 
 		                    $formatedFavoritesInfo = "$link,$img,$name,$price,Nordstrom";
 		                    if(isset($_COOKIE['username'])){
 									$formatedFavoritesInfo = $_COOKIE['username'] . ',' . $formatedFavoritesInfo;
-									$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'><input type='hidden' name='itemname' value='$formatedFavoritesInfo'>";
+									//$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'><input type='hidden' name='itemname' value='$formatedFavoritesInfo'>";
+									$showAddToFavorites = "&nbsp;&nbsp;<input type='submit' name='itemnamesubmit' value='Add'>
+									<input type='hidden' name='itemname' value='$formatedFavoritesInfo'>
+									<input type='hidden' name='search_button' value='clicked'>
+									<input type='hidden' name='search_term' value='$search_term2'>
+									";
 
 		                    }
 
 	echo "<form>
 	  <div class='col-sm-4 col-md-4'>
-	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#CCCCCC;'>
+	    <div class='thumbnail' style='height:400px; width:350px; text-align: center; background-color:#C0C0C0;'>
 	    <h4><u>Nordstrom</u></h4>
 	  	<br>
 	      <a href='$link'><img src='$img' style='height:150px;' alt='...'></a><br>

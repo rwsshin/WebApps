@@ -1,0 +1,81 @@
+/**
+ * http get requests are sent to the following url
+ * https://script.google.com/macros/s/AKfycbyjKEQF7TmAU0YHXWzQ74rKRnviWpLC63VRICMgQxofqz3xF7C3/exec
+ * Serves HTML of the application for HTTP GET requests.
+ * If folderId is provided as a URL parameter, the web app will list
+ * the contents of that folder (if permissions allow). Otherwise
+ * the web app will list the contents of the root folder.
+ *
+ * @param {Object} e event parameter that can contain information
+ *     about any URL parameters provided.
+ */
+function doGet(e) {
+  var params = JSON.stringify(e);
+
+  params =   e.parameters.favoritesstring[0];
+  var stringExplode = params.split(","); 
+  
+  var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1ACuOqrN3hjms41H0Rz2BOtTuxGHb-GWYUOr_ZVNCD_0/edit?usp=sharing');
+
+ var sheet = ss.getSheets()[0];
+ var range = sheet.getRange(1, 1, 100, 5);
+  range.setValue("");
+  
+  for (i = 1; i < stringExplode.length/5 + 1; i++) {
+    ss.getRange("A" + i).setValue(stringExplode[5*(i-1) + 0]);
+    ss.getRange("B" + i).setValue(stringExplode[5*(i-1) + 1]);
+    ss.getRange("C" + i).setValue(stringExplode[5*(i-1) + 2]);
+    ss.getRange("D" + i).setValue(stringExplode[5*(i-1) + 3]);
+    ss.getRange("E" + i).setValue(stringExplode[5*(i-1) + 4]);
+    
+    
+    //ss.getRange("A" + i).setValue("1");
+    //ss.getRange("B" + i).setValue("a");
+    //ss.getRange("C" + i).setValue("2");
+    //ss.getRange("D" + i).setValue("b");
+    //ss.getRange("E" + i).setValue("z");
+  }
+
+
+
+
+  return ContentService.createTextOutput(ss.getSheetValues(2,1,1,4));//row, col, numrows, numcols
+
+  
+}
+
+/**
+ * Return an array of up to 20 filenames contained in the
+ * folder previously specified (or the root folder by default).
+ *
+ * @param {String} folderId String ID of folder whose contents
+ *     are to be retrieved; if this is 'root', the
+ *     root folder is used.
+ * @return {Object} list of content filenames, along with
+ *     the root folder name.
+ */
+function getFolderContents(folderId) {
+  var topFolder;
+  var contents = {
+      children: []
+  };
+
+  if (folderId == 'root') {
+    topFolder = DriveApp.getRootFolder();
+  } else {
+    // May throw exception if the folderId is invalid or app
+    // doesn't have permission to access.
+    topFolder = DriveApp.getFolderById(folderId);
+  }
+  contents.rootName = topFolder.getName() + '/';
+
+  var files = topFolder.getFiles();
+  var numFiles = 0;
+  while (files.hasNext() && numFiles < 20) {
+   var file = files.next();
+   contents.children.push(file.getName());
+   numFiles++;
+  }
+
+  return contents;
+}
